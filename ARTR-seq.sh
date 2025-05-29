@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### this script is modified from https://github.com/mingming-cgz/ARTR-seq/
 ## trimming
 # {}_R1_001.fastq.gz & {}_R2_001.fastq.gz as raw PE reads
 ls *_R1_001.fastq.gz \
