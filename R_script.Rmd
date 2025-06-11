@@ -49,7 +49,7 @@ dds <- DESeqDataSetFromMatrix(countData = Peak_counts, colData = sample_info, de
 dds_ctrl <- dds[, dds$group == "control"]
 dds_ctrl$group <- droplevels(dds_ctrl$group)
 dds_ctrl$type <- droplevels(dds_ctrl$type)
-dds_ctrl$type <- relevel(dds_ctr$type, ref = "Input")
+dds_ctrl$type <- relevel(dds_ctrl$type, ref = "Input")
 design(dds_ctrl) <- ~ type  
 # Run DESeq on the subsetted dataset
 dds_ctrl <- DESeq(dds_ctrl)
