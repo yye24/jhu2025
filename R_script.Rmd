@@ -21,7 +21,7 @@ library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(dplyr)
 ```
 
-### Import .narrowPeak file: Peak_all, and annotate the peaks
+### Import narrowPeak file: /path/to/file/Peak_all.narrowPeak, and annotate the peaks
 ```{r}
 Txdb.hg38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
 Peak_all_plus <- subset(Peak_all, Peak_all$V6 == "+")
@@ -34,7 +34,7 @@ annot_Peak_all = as.data.frame(Peak_all.bed.annot)
 ```
 
 ### Calculate the enrichment score: IP/input
-## import raw counts data: Peak_counts.txt
+## import raw counts data: /path/to/file/Peak_counts.txt
 ```{r}
 sample_info <- data.frame(
   row.names = colnames(Peak_counts,
