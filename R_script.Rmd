@@ -1,7 +1,6 @@
 ---
 title: "R_script"
-author: "yye24"
-contact:"yye24@jh.edu"
+author: "yye24@jh.edu"
 date: "2025-02-18"
 output: html_document
 ---
