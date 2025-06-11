@@ -1,0 +1,47 @@
+### Load required packages
+```{r}
+library(ChIPseeker)
+library(clusterProfiler)
+library(DESeq2)
+library(GenomicFeatures)
+library(GenomicAlignments)
+library(biomaRt)
+library(org.Hs.eg.db)
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+library(dplyr)
+```
+
+### Import .narrowPeak file: Peak_all, and annotate the peaks
+```{r}
+Txdb.hg38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
+Peak_all_plus <- subset(Peak_all, Peak_all$V6 == "+")
+Peak_all_minus <- subset(Peak_all, Peak_all$V6 == "-")
+Peak_all_plus.gr <- GRanges(seqnames=Peak_all_plus$V1, ranges=IRanges(Peak_all_plus$V2, Peak_all_plus$V3), strand="+", mcols=data.frame(peakID=Peak_all$V4))
+Peak_all_minus.gr <- GRanges(seqnames=Peak_all_minus$V1, ranges=IRanges(Peak_all_minus$V2, Peak_all_minus$V3), strand="-", mcols=data.frame(peakID=Peak_all_minus$V4))
+Peak_all.gr <- c(Peak_all_plus.gr, Peak_all_minus.gr)
+Peak_all.bed.annot = annotatePeak(Peak_all.gr, tssRegion=c(-3000, 3000), TxDb=Txdb.hg38, annoDb="org.Hs.eg.db")
+annot_Peak_all = as.data.frame(Peak_all.bed.annot)
+```
+
+### Calculate the enrichment score: IP/input
+## import raw counts data: Peak_counts.txt
+```{r}
+sample_info <- data.frame(
+  row.names = colnames(Peak_counts,
+  condition = gsub("_.*","", names(Peak_counts)),
+  group = factor(c("control", "control", "control", "control", "control", "control", "treatment", "treatment", "treatment", "treatment", "treatment", "treatment"),
+  type = factor(c("Input", "Input", "Input", "IP", "IP", "IP", "Input", "Input", "Input", "IP", "IP", "IP"))
+)
+sample_info$group <- relevel(sample_info$group, ref = "control")
+sample_info$type <- relevel(sample_info$type, ref = "Input")
+dds <- DESeqDataSetFromMatrix(countData = ARTR_peak_counts_sub, colData = sample_info, design = ~ group + type)
+# subset dataset
+dds_ctrl <- dds[, dds$group == "control"]
+dds_ctrl$group <- droplevels(dds_ctrl$group)
+dds_ctrl$type <- droplevels(dds_ctrl$type)
+dds_ctrl$type <- relevel(dds_ctr$type, ref = "Input")
+design(dds_ctrl) <- ~ type  
+# Run DESeq on the subsetted dataset
+dds_ctrl <- DESeq(dds_ctrl)
+deseq2_ctrl_ip_vs_input <- results(dds_ctrl, contrast = c("type", "IP", "Input"))
+```
