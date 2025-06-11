@@ -44,7 +44,7 @@ sample_info <- data.frame(
 )
 sample_info$group <- relevel(sample_info$group, ref = "control")
 sample_info$type <- relevel(sample_info$type, ref = "Input")
-dds <- DESeqDataSetFromMatrix(countData = ARTR_peak_counts_sub, colData = sample_info, design = ~ group + type)
+dds <- DESeqDataSetFromMatrix(countData = Peak_counts, colData = sample_info, design = ~ group + type)
 # subset dataset
 dds_ctrl <- dds[, dds$group == "control"]
 dds_ctrl$group <- droplevels(dds_ctrl$group)
