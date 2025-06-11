@@ -1,3 +1,14 @@
+---
+title: "R_script"
+author: "YingzhiYe"
+date: "2025-02-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ### Load required packages
 ```{r}
 library(ChIPseeker)
